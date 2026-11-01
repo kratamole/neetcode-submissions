@@ -1,0 +1,42 @@
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s2.length() < s1.length()) {
+            return false;
+        }
+        boolean res = false;
+        int[] s1Counts = new int[26];
+        for (char c : s1.toCharArray()) {
+            s1Counts[c-'a'] += 1;
+        }
+        for (int i = 0; i < s2.length() - s1.length() + 1; i++) {
+            if (s1Counts[s2.charAt(i)-'a'] > 0) {
+                int[] candidateCounts = new int[26];
+                boolean forceBreak = false;
+                for (int j = i; j < i + s1.length(); j++) {
+                    // System.out.println("i:"+i+"; j:"+j);
+                    if (s1Counts[s2.charAt(j)-'a'] == 0) {
+                        forceBreak = true;
+                        break;
+                    }
+                    candidateCounts[s2.charAt(j)-'a'] += 1;
+                }
+                if (forceBreak) {
+                    continue;
+                }
+                for (int k = 0; k < 26; k++) {
+                    if (candidateCounts[k] != s1Counts[k]) {
+                        forceBreak = true;
+                        break;
+                    }
+                }
+                if (forceBreak) {
+                    continue;
+                } else {
+                    return true;
+                }
+
+            }
+        }
+        return res;
+    }
+}
